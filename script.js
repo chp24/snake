@@ -128,7 +128,7 @@ function tickGame(){
     
 }
 
-setInterval(tickGame, 250)
+setInterval(tickGame, 100)
 //listening to player input
 document.addEventListener('keydown', function(event) {
     
