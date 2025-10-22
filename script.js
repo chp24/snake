@@ -6,71 +6,79 @@ const ctx = canvas.getContext('2d')
 
 ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-ctx.fillStyle = 'white'       // set the fill color
-head_x = 200
-player_y = 200
-ctx.fillRect(head_x, player_y, 15, 15)   // draw the square
+//snake object
+let head = { x: 200, y: 200, color: "white" };
 
+//apple object
+let apple = { x: 100, y: 100, color: "red" };
+
+//var to keep track of last pressed key
 lastKeyPressed = ''
-function moveDot(){
-    console.log('head_x: ', head_x)
-    console.log('player_y: ', player_y)
+
+ctx.fillStyle = head.color //set color for player head
+ctx.fillRect(head.x, head.y, 15, 15) //draw the square for player head
+
+ctx.fillStyle = apple.color //set the fill color for apple dot
+ctx.fillRect(apple.x, apple.y, 15, 15) //draw the square for apple
+
+function tickGame(){
+    console.log('head.x: ', head.x)
+    console.log('head.y: ', head.y)
 
     //out of bounds checking
-    if( head_x < 0 || head_x > 400 || player_y < 0 || player_y > 400){
+    if( head.x < 0 || head.x > 400 || head.y < 0 || head.y > 400){
         //reset player location
-        head_x = 200
-        player_y = 200
+        head.x = 200
+        head.y = 200
     }
     //move in last direction pressed
     else if(lastKeyPressed == 'w'){
-        player_y-= 20
+        head.y-= 20
     }
     else if(lastKeyPressed == 's'){
-        player_y+= 20
+        head.y+= 20
     }
     else if(lastKeyPressed == 'a'){
-        head_x-= 20
+        head.x-= 20
     }
     else if(lastKeyPressed == 'd'){
-        head_x+= 20
+        head.x+= 20
     }
     else {
-        player_y-= 20
+        head.y-= 20
+
+        //create first apple dot
     }
     
 
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    ctx.fillRect (head_x,player_y,15,15)
+
+    ctx.fillStyle = head.color //set color for player head
+    ctx.fillRect(head.x, head.y, 15, 15) //draw the square for player head
+
+    ctx.fillStyle = apple.color //set the fill color for apple dot
+    ctx.fillRect(apple.x, apple.y, 15, 15) //draw the square for apple
+    
 };
 
-setInterval(moveDot, 180)
-
+setInterval(tickGame, 180)
+//listening to player input
 document.addEventListener('keydown', function(event) {
-    // event.key contains the keypressed
     
     //logic for valid keypresses, basically just dont let player move backwards
     if (event.key == 'w' && lastKeyPressed != 's'){
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-        ctx.fillRect (head_x,player_y,15,15)
         lastKeyPressed = 'w'
     }
 
     if (event.key == 's' && lastKeyPressed != 'w'){
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-        ctx.fillRect (head_x,player_y,15,15)
         lastKeyPressed = 's'
     }
 
     if (event.key == 'a' && lastKeyPressed != 'd'){
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-        ctx.fillRect (head_x,player_y,15,15)
         lastKeyPressed = 'a'
     }
 
     if (event.key == 'd' && lastKeyPressed != 'a'){
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-        ctx.fillRect (head_x,player_y,15,15)
         lastKeyPressed = 'd'
     }
 });
