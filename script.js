@@ -10,16 +10,15 @@ ctx.fillStyle = 'white'       // set the fill color
 x = 200
 y = 200
 ctx.fillRect(x, y, 15, 15)   // draw the square
-timer = 25
 
-// while( timer > 0 ){
-//     y -= 10
-//     timer -= 1
+function moveDot(){
+    console.log('entered movedot')
+    y -= 20
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.fillRect (x,y,15,15)
+};
 
-//     ctx.clearRect(0, 0, canvas.width, canvas.height)
-//     ctx.fillRect (x,y,15,15)
-
-// }
+setInterval(moveDot, 1000)
 
 document.addEventListener('keydown', function(event) {
     // event.key contains the key pressed
@@ -27,6 +26,24 @@ document.addEventListener('keydown', function(event) {
     if (event.key == 'w'){
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         y -= 10
+        ctx.fillRect (x,y,15,15)
+    }
+
+    if (event.key == 's'){
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        y += 10
+        ctx.fillRect (x,y,15,15)
+    }
+
+    if (event.key == 'a'){
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        x -= 10
+        ctx.fillRect (x,y,15,15)
+    }
+
+    if (event.key == 'd'){
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        x += 10
         ctx.fillRect (x,y,15,15)
     }
 });
