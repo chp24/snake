@@ -9,7 +9,7 @@ ctx.clearRect(0, 0, canvas.width, canvas.height)
 let snake = { x: 200, y: 200, color: "white" }
 
 //need a list  of coordinates to draw all of our pieces 
-const snakeParts = [ { x: snake.x, y: snake.y } ]
+let snakeParts = [ { x: snake.x, y: snake.y } ]
 
 //apple object
 let apple = { x: 200, y: 100, color: "red" }
@@ -20,7 +20,6 @@ lastKeyPressed = ''
 let tail = snakeParts.length - 1
 
 //var for saving the tail to push new parts
-// let tempTail = {x: snake.x, y: snake.y}
 let tempTail = null
 
 ctx.fillStyle = snake.color //set color for player snake
@@ -29,21 +28,46 @@ ctx.fillRect(snakeParts[0].x, snakeParts[0].y, 20, 20) //draw the square for pla
 ctx.fillStyle = apple.color //set the fill color for apple dot
 ctx.fillRect(apple.x, apple.y, 20, 20) //draw the square for apple
 
+function resetGame(){
+
+    //clear canvas for redraw
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    
+    //reset player location
+    snakeParts[0].x = 200
+    snakeParts[0].y = 200
+    //reset list
+    snakeParts = [ { x: snake.x, y: snake.y } ]
+
+    //reset tail
+    tail = snakeParts.length - 1
+
+    //reset temp tail
+    tempTail = null
+
+    //reset apple
+    apple.x = 200
+    apple.y = 100
+    //reset last key pressed
+    lastKeyPressed = ''
+}
 function tickGame(){
     
-    console.log('snakeParts: ', snakeParts)
-
     //clear canvas for redraw
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     
 
     //out of bounds checking
     if( snakeParts[0].x < 0 || snakeParts[0].x > 400 || snakeParts[0].y < 0 || snakeParts[0].y > 400){
-        //reset player location
-        snakeParts[0].x = 200
-        snakeParts[0].y = 200
+        resetGame()
     }
-
+    
+    //body collision checking
+    for (let i = tail; i > 0; i--) {
+        if(snakeParts[0].x == snakeParts[i].x && snakeParts[0].y == snakeParts[i].y){
+            resetGame()
+        }
+    }
     //apple detection
     if (snakeParts[0].x == apple.x && snakeParts[0].y == apple.y) {
         
@@ -59,13 +83,11 @@ function tickGame(){
         apple.y = Math.floor(apple.y / 20) * 20
     }
     //now we have the location for the new apple and the new tail
-    
     //now loop through tail list, update and draw all updated positions
-    
     for (let i = tail; i > 0; i--) {
         snakeParts[i].x = snakeParts [i-1].x
         snakeParts[i].y = snakeParts [i-1].y
-        
+
         ctx.fillStyle = snake.color //set color for this part of the body
         ctx.fillRect(snakeParts[i].x, snakeParts[i].y, 20, 20) //draw the square for player snake
     } 
@@ -83,7 +105,6 @@ function tickGame(){
 
         //update tail
         tail = snakeParts.length - 1
-    
     }
     
     //move head according to last direction pressed
@@ -101,7 +122,6 @@ function tickGame(){
     
     ctx.fillStyle = snake.color //set color for this part of the body
     ctx.fillRect(snakeParts[0].x, snakeParts[0].y, 20, 20) //draw the square for player snake
-
 
     ctx.fillStyle = apple.color //set the fill color for apple dot
     ctx.fillRect(apple.x, apple.y, 20, 20) //draw the square for apple
