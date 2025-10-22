@@ -10,20 +10,20 @@ ctx.clearRect(0, 0, canvas.width, canvas.height)
 let head = { x: 200, y: 200, color: "white" };
 
 //apple object
-let apple = { x: 100, y: 100, color: "red" };
+let apple = { x: 200, y: 100, color: "red" };
 
 //var to keep track of last pressed key
 lastKeyPressed = ''
 
 ctx.fillStyle = head.color //set color for player head
-ctx.fillRect(head.x, head.y, 15, 15) //draw the square for player head
+ctx.fillRect(head.x, head.y, 20, 20) //draw the square for player head
 
 ctx.fillStyle = apple.color //set the fill color for apple dot
-ctx.fillRect(apple.x, apple.y, 15, 15) //draw the square for apple
+ctx.fillRect(apple.x, apple.y, 20, 20) //draw the square for apple
 
 function tickGame(){
-    console.log('head.x: ', head.x)
-    console.log('head.y: ', head.y)
+    console.log('apple.x: ', apple.x)
+    console.log('apple.y: ', apple.y)
 
     //out of bounds checking
     if( head.x < 0 || head.x > 400 || head.y < 0 || head.y > 400){
@@ -44,20 +44,31 @@ function tickGame(){
     else if(lastKeyPressed == 'd'){
         head.x+= 20
     }
-    else {
+    else {//head starts out moving up
         head.y-= 20
-
-        //create first apple dot
     }
-    
+
+    if (head.x === apple.x && head.y === apple.y) {
+
+        //add a tail
+        
+        //randomize new location for apple
+        apple.x = Math.floor(Math.random() * (canvas.width - 20));
+        apple.y = Math.floor(Math.random() * (canvas.height - 20));
+
+        //snap to nearest 20 for valid placement
+        apple.x = Math.floor(apple.x / 20) * 20;
+        apple.y = Math.floor(apple.y / 20) * 20;
+
+    }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
     ctx.fillStyle = head.color //set color for player head
-    ctx.fillRect(head.x, head.y, 15, 15) //draw the square for player head
+    ctx.fillRect(head.x, head.y, 20, 20) //draw the square for player head
 
     ctx.fillStyle = apple.color //set the fill color for apple dot
-    ctx.fillRect(apple.x, apple.y, 15, 15) //draw the square for apple
+    ctx.fillRect(apple.x, apple.y, 20, 20) //draw the square for apple
     
 };
 
